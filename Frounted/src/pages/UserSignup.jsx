@@ -46,10 +46,12 @@ const UserSignup = () => {
 
       if(response.status === 201){
         const data = response.data
-        
+        // console.log(response.data)
         setUser(data.user)
+        // console.log(data.user);
+        localStorage.setItem("token",data.token);
 
-        navigate('/home')
+        navigate('/home');
       }
 
       setFirstname('');

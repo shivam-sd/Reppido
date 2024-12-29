@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useState , useContext } from "react";
+import { Link , useNavigate} from "react-router-dom";
+import { UserContextData } from "../context/UserContext";
 
 const UserLogin = () => {
 
@@ -15,15 +17,32 @@ const UserLogin = () => {
 
   const [userData , setUserData] = useState({});
   
-  const handleSubmitEvent = (e) => {
-    setEmail('');
-    setPassword('');
-    setUserData({
+  const navigate = useNavigate();
+
+  const {user , setUser} = useContext(UserContextData)
+
+  const handleSubmitEvent = async (e) => {
+    e.preventDefault();
+
+    const loginUserData = {
       email:email,
       password:password
-    })
+    }
     // console.log(userData);
-    e.preventDefault();
+
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login` , loginUserData);
+
+    if(response.status === 200){
+      const data = response.data;
+      // console.log(response);
+      setUser(data.user);
+      // console.log(data.user);
+      localStorage.setItem("token",data.token);
+
+      navigate("/home")
+      setEmail('');
+      setPassword('');
+    }
   }
   return (
     <div className="flex flex-col justify-between h-screen">

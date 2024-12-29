@@ -42,7 +42,7 @@ const CaptionSignup = () => {
       setPassword('');
       setemail('');
 
-      // console.log(UserData);
+      console.log(UserData);
   }
 
 
